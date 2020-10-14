@@ -17,12 +17,21 @@ features = ["everything", "impl-debug", "impl-default"]
 default-target = "x86_64-pc-windows-msvc"
 targets = ["aarch64-pc-windows-msvc", "i686-pc-windows-msvc", "x86_64-pc-windows-msvc"]
 
+[dependencies]
+# Refer to wasi
+# When built as part of libstd
+compiler_builtins = { version = "0.1", optional = true }
+core = { version = "1.0", optional = true, package = "rustc-std-workspace-core" }
+alloc = { version = "1.0", optional = true, package = "rustc-std-workspace-alloc" }
+
 [target.i686-pc-windows-gnu.dependencies]
 winapi-i686-pc-windows-gnu = { version = "0.4", path = "i686" }
 [target.x86_64-pc-windows-gnu.dependencies]
 winapi-x86_64-pc-windows-gnu = { version = "0.4", path = "x86_64" }
 
 [features]
+# Unstable feature to support being a libstd dependency
+rustc-dep-of-std = ["compiler_builtins", "core", "alloc"]
 debug = ["impl-debug"]
 everything = []
 impl-debug = []
